@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dentro do Labirinto</title>
+  <style>
+    body {
+      background: black;
+      color: white;
+      font-family: 'Georgia', serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    .mensagem {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    .btn-voltar {
+      background: crimson;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      border-radius: 8px;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="mensagem">Você entrou no labirinto.</div>
+  <button class="btn-voltar" onclick="voltar()">Voltar</button>
+
+  <script>
+    function voltar() {
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>
