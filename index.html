@@ -1,51 +1,33 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Labirinto – Início</title>
+  <title>Entrar no Labirinto</title>
   <style>
     body {
-      background-color: #000;
-      color: #fff;
+      background-color: black;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       font-family: 'Georgia', serif;
-      text-align: center;
-      padding-top: 25vh;
     }
-
-    h1 {
-      font-size: 2.5rem;
-      animation: breathe 4s ease-in-out infinite;
+    a {
+      background-color: crimson;
+      color: white;
+      padding: 20px 40px;
+      text-decoration: none;
+      font-size: 24px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
     }
-
-    .botao {
-      margin-top: 40px;
-      padding: 15px 30px;
-      background-color: #00cc99;
-      color: #000;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    @keyframes breathe {
-      0%, 100% {
-        opacity: 0.7;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 1;
-        transform: scale(1.05);
-      }
-    }
-
-    .botao:hover {
-      background-color: #00b38f;
+    a:hover {
+      background-color: darkred;
     }
   </style>
 </head>
 <body>
-  <h1>O Livro Respira...</h1>
-  <button class="botao" onclick="window.location.href='pagina1.html'">Entrar</button>
+  <a href="pagina1.html">ENTRAR NO LABIRINTO</a>
 </body>
 </html>
