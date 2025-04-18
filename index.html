@@ -1,3 +1,51 @@
-https://peaufergon.github.io/labirinto-teste/pagina2.html
-https://peaufergon.github.io/labirinto-teste/pagina1.html
-https://peaufergon.github.io/labirinto-teste/pagina3.html
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Labirinto – Início</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Georgia', serif;
+      text-align: center;
+      padding-top: 25vh;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      animation: breathe 4s ease-in-out infinite;
+    }
+
+    .botao {
+      margin-top: 40px;
+      padding: 15px 30px;
+      background-color: #00cc99;
+      color: #000;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    @keyframes breathe {
+      0%, 100% {
+        opacity: 0.7;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.05);
+      }
+    }
+
+    .botao:hover {
+      background-color: #00b38f;
+    }
+  </style>
+</head>
+<body>
+  <h1>O Livro Respira...</h1>
+  <button class="botao" onclick="window.location.href='pagina1.html'">Entrar</button>
+</body>
+</html>
