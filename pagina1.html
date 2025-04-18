@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Página 1</title>
+  <style>
+    body {
+      margin: 0;
+      background: #121212;
+      color: #fff;
+      font-family: 'Georgia', serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      animation: pulse 3s infinite;
+    }
+
+    @keyframes pulse {
+      0% { background-color: #121212; }
+      50% { background-color: #1e1e1e; }
+      100% { background-color: #121212; }
+    }
+
+    .texto {
+      max-width: 600px;
+      text-align: center;
+      font-size: 1.3rem;
+      padding: 20px;
+    }
+
+    .botoes {
+      margin-top: 30px;
+    }
+
+    .botao {
+      padding: 10px 20px;
+      margin: 0 10px;
+      border: none;
+      background-color: #f26d4a;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: background 0.3s;
+    }
+
+    .botao:hover {
+      background-color: #ff3c00;
+    }
+  </style>
+</head>
+<body>
+  <div class="texto">
+    <h1>A primeira chama</h1>
+    <p>Você abre o livro... e sente algo estranho. As palavras parecem respirar. O ar ao redor está mais quente.</p>
+  </div>
+  <div class="botoes">
+    <a href="index.html"><button class="botao">Voltar</button></a>
+    <a href="pagina2.html"><button class="botao">Próxima</button></a>
+  </div>
+</body>
+</html>
