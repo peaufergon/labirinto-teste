@@ -1,74 +1,31 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Labirinto Hipertextual</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-    .path {
-      margin: 20px 0;
-      cursor: pointer;
-      color: blue;
-      text-decoration: underline;
-    }
-    .path:hover {
-      color: darkblue;
-    }
-    #audioPlayer {
-      display: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labirinto Teste</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Adicione seu arquivo CSS se necessário -->
 </head>
 <body>
-  <h1>Labirinto Hipertextual</h1>
-  <p>Escolha seu caminho no labirinto...</p>
 
-  <!-- Links para os caminhos -->
-  <div id="path1" class="path" onclick="navigateTo('1')">Caminho 1: O Início</div>
-  <div id="path2" class="path" onclick="navigateTo('2')">Caminho 2: O Mistério</div>
+    <header>
+        <h1>Bem-vindo ao Labirinto!</h1>
+        <p>Explore o labirinto clicando nos links abaixo:</p>
+    </header>
 
-  <div id="contentArea"></div>
+    <nav>
+        <ul>
+            <li><a href="pagina-fogo-v2.html">Página Fogo V2</a></li>
+            <li><a href="pagina-fogo.html">Página Fogo</a></li>
+            <li><a href="página1.html">Página 1</a></li>
+            <li><a href="página2.html">Página 2</a></li>
+            <li><a href="página3.html">Página 3</a></li>
+        </ul>
+    </nav>
 
-  <!-- Player de áudio -->
-  <audio id="audioPlayer" controls>
-    <source id="audioSource" type="audio/mpeg">
-    Seu navegador não suporta o elemento de áudio.
-  </audio>
+    <footer>
+        <p>© 2025 Labirinto Teste. Todos os direitos reservados.</p>
+    </footer>
 
-  <script>
-    // Definindo os arquivos de áudio
-    const audioFiles = {
-      '1': 'audio/caminho1.mp3',  // Substitua pelo caminho correto
-      '2': 'audio/caminho2.mp3',  // Substitua pelo caminho correto
-    };
-
-    // Função de navegação
-    function navigateTo(pathId) {
-      let content = '';
-      let audioFile = audioFiles[pathId];
-
-      // Definindo o conteúdo para cada caminho
-      if (pathId === '1') {
-        content = '<h2>Você está no Início do Labirinto!</h2><p>Escolha seu próximo passo...</p>';
-      } else if (pathId === '2') {
-        content = '<h2>O Mistério se Profunda!</h2><p>Você está em uma encruzilhada...</p>';
-      }
-
-      // Exibindo o conteúdo
-      document.getElementById('contentArea').innerHTML = content;
-
-      // Configurando o player de áudio
-      const audioPlayer = document.getElementById('audioPlayer');
-      const audioSource = document.getElementById('audioSource');
-      audioSource.src = audioFile;
-
-      audioPlayer.load();  // Carregar o áudio
-      audioPlayer.style.display = 'block';  // Exibe o player de áudio
-      audioPlayer.play();  // Reproduz o áudio
-    }
-  </script>
 </body>
 </html>
