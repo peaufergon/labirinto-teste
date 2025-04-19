@@ -1,73 +1,26 @@
 <!DOCTYPE html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Labirinto</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: "Courier New", monospace;
-      background: black;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-image: url('https://i.imgur.com/h9GpX8v.jpeg');
-      background-size: cover;
-      background-position: center;
-    }
+<html>
+  <head>
+    <title>RA Teste</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.3.2/aframe/build/aframe-ar.min.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; font-family: sans-serif; }
+    </style>
+  </head>
+  <body>
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+        <!-- Texto 3D flutuante -->
+        <a-entity position="0 0.5 0" rotation="-90 0 0">
+          <a-text value="Teste RA" color="red" align="center" width="3"></a-text>
+        </a-entity>
 
-    .entrada {
-      background: rgba(0, 0, 0, 0.7);
-      padding: 2em;
-      border: 2px solid white;
-      border-radius: 10px;
-      text-align: center;
-      animation: fadeIn 2s ease-in;
-    }
-
-    h1 {
-      font-size: 2em;
-      margin-bottom: 20px;
-    }
-
-    button {
-      background: crimson;
-      border: none;
-      color: white;
-      padding: 1em 2em;
-      font-size: 1em;
-      cursor: pointer;
-      border-radius: 5px;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background: darkred;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="entrada">
-    <h1>Você está pronto para entrar no labirinto?</h1>
-    <button onclick="entrarNoLabirinto()">Entrar</button>
-  </div>
-
-  <script>
-    function entrarNoLabirinto() {
-      window.location.href = "pagina1.html";
-    }
-  </script>
-
-</body>
+        <!-- Imagem símbolo -->
+        <a-image src="https://raw.githubusercontent.com/peaufergon/labirinto-teste/main/assets/Hiro_marker_ARjs.png" 
+                 position="0 0 0" rotation="-90 0 0" width="1" height="1"></a-image>
+      </a-marker>
+      <a-entity camera></a-entity>
+    </a-scene>
+  </body>
 </html>
