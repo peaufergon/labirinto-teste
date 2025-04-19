@@ -1,0 +1,24 @@
+<!DOCTYPE html><html>
+  <head>
+    <title>RA Teste</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.3.2/aframe/build/aframe-ar.min.js"></script>
+    <style>
+      body { margin: 0; overflow: hidden; font-family: sans-serif; }
+    </style>
+  </head>
+  <body>
+    <a-scene embedded arjs>
+      <a-marker preset="hiro">
+        <!-- Texto 3D flutuante -->
+        <a-entity position="0 0.5 0" rotation="-90 0 0">
+          <a-text value="Teste RA" color="red" align="center" width="3"></a-text>
+        </a-entity><!-- Imagem símbolo -->
+    <a-image src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Iconic_image_placeholder.png/240px-Iconic_image_placeholder.png" 
+             position="0 0 0" rotation="-90 0 0" width="1" height="1"></a-image>
+  </a-marker>
+  <a-entity camera></a-entity>
+</a-scene>
+
+  </body>
+</html>
