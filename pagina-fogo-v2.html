@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Página em Fogo</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: black;
+      font-family: 'Courier New', monospace;
+      overflow: hidden;
+      color: white;
+      position: relative;
+    }
+
+    #text-container {
+      position: absolute;
+      top: 10%;
+      left: 5%;
+      right: 5%;
+      font-size: 22px;
+      line-height: 1.6;
+      z-index: 2;
+      white-space: pre-wrap;
+    }
+
+    #background-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      opacity: 0;
+      background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=1350&q=80');
+      background-size: cover;
+      background-position: center;
+      z-index: 1;
+      transition: opacity 4s ease-in-out;
+    }
+
+    #fire-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://i.imgur.com/o7fG8xg.gif'); /* fogo real */
+      background-size: cover;
+      opacity: 0;
+      z-index: 3;
+      pointer-events: none;
+      transition: opacity 2s ease-in-out;
+    }
+
+    #fragment {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
+      width: 80px;
+      height: 80px;
+      background-image: url('https://i.imgur.com/zYIlgBl.png'); /* peça de quebra-cabeça */
+      background-size: contain;
+      background-repeat: no-repeat;
+      z-index: 4;
+      opacity: 0;
+      cursor: pointer;
+      transition: opacity 1s ease-in;
+    }
+  </style>
+</head>
+<body>
+
+<div id="background-image"></div>
+<div id="text-container"></div>
+<div id="fire-overlay"></div>
+<div id="fragment" title="Clique para continuar"></div>
+
+<script>
+  const text = `“E então, quando tudo parecia calmo... a página começou a arder.”\n\nNada era por acaso.\nAs palavras carregavam sinais.\nAs cinzas sabiam mais do que os olhos.`;
+  const container = document.getElementById("text-container");
+  const bg = document.getElementById("background-image");
+  const fire = document.getElementById("fire-overlay");
+  const fragment = document.getElementById("fragment");
+
+  let i = 0;
+
+  function typeText() {
+    if (i < text.length) {
+      container.textContent += text.charAt(i);
+      i++;
+      if (i === Math.floor(text.length / 2)) {
+        bg.style.opacity = 0.25;
+      }
+      setTimeout(typeText, 100); // velocidade controlada aqui
+    } else {
+      triggerFire();
+    }
+  }
+
+  function triggerFire() {
+    bg.style.opacity = 0.5;
+    fire.style.opacity = 1;
+
+    setTimeout(() => {
+      fire.style.opacity = 0;
+      container.style.opacity = 0;
+      bg.style.opacity = 0;
+      fragment.style.opacity = 1;
+
+      // redirecionamento automático após 5s
+      setTimeout(() => {
+        window.location.href = "pagina-eco.html";
+      }, 5000);
+    }, 4000); // tempo de "queima"
+  }
+
+  fragment.onclick = () => {
+    window.location.href = "pagina-eco.html";
+  };
+
+  // Iniciar digitação após leve delay
+  setTimeout(typeText, 1000);
+</script>
+
+</body>
+</html>
