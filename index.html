@@ -1,47 +1,94 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Labirinto Teste</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #111;
-      color: white;
-      text-align: center;
-      padding: 50px;
-    }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 40px;
-    }
-    .button-list a {
-      display: inline-block;
-      margin: 10px;
-      padding: 15px 25px;
-      background-color: #ff4500;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-size: 1.2em;
-      transition: background 0.3s;
-    }
-    .button-list a:hover {
-      background-color: #ff2200;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Labirinto Gamificado</title>
+    <style>
+        /* Coloque seu CSS aqui ou mantenha o que você já tem */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: white;
+            text-align: center;
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+        }
+
+        .active {
+            display: block;
+        }
+
+        /* Estilos para o botão */
+        #enter-button {
+            font-size: 20px;
+            padding: 15px 30px;
+            background-color: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #enter-button:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
-  <h1>Labirinto Teste</h1>
-  <p>Escolha uma das experiências abaixo:</p>
 
-  <div class="button-list">
-    <a href="pagina1.html">Página 1</a>
-    <a href="pagina2.html">Página 2</a>
-    <a href="pagina3.html">Página 3</a>
-    <a href="pagina-fogo.html">Fogo v1</a>
-    <a href="pagina-fogo-v2.html">Fogo v2 (cinematográfico)</a>
-  </div>
+    <!-- Página 1 - Entrada -->
+    <div id="page1" class="page active">
+        <h1>Bem-vindo ao Labirinto!</h1>
+        <p>Inicie a jornada clicando abaixo...</p>
+        <button id="enter-button">Entrar</button>
+    </div>
+
+    <!-- Página 2 - Segundo estágio -->
+    <div id="page2" class="page">
+        <h1>Segunda Página</h1>
+        <p>Você está avançando!</p>
+    </div>
+
+    <!-- Página 3 - Quase lá -->
+    <div id="page3" class="page">
+        <h1>Quase lá...</h1>
+        <p>Prepare-se para a última parte!</p>
+    </div>
+
+    <!-- Página 4 - Conclusão -->
+    <div id="page4" class="page">
+        <h1>Parabéns!</h1>
+        <p>Você completou a jornada!</p>
+    </div>
+
+    <script>
+        // Função para navegação automática
+        let currentPage = 1;
+
+        function goToNextPage() {
+            const current = document.getElementById('page' + currentPage);
+            current.classList.remove('active');
+            currentPage++;
+            const next = document.getElementById('page' + currentPage);
+            next.classList.add('active');
+
+            // Se chegar na última página, para
+            if (currentPage === 4) {
+                return;
+            }
+
+            setTimeout(goToNextPage, 5000); // Avança para a próxima após 5 segundos
+        }
+
+        // Iniciar a navegação automática ao clicar no botão
+        document.getElementById('enter-button').addEventListener('click', function() {
+            goToNextPage();
+        });
+    </script>
+
 </body>
 </html>
