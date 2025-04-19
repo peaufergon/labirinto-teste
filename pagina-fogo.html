@@ -1,82 +1,93 @@
-<!DOCTYPE html><html lang="pt-BR">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Página Viva</title>
+  <title>Página em Fogo</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
       background: black;
       color: white;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 1.2rem;
+      font-family: 'Courier New', monospace;
+      padding: 20px;
       overflow: hidden;
-    }
-    #container {
-      padding: 50px;
-      max-width: 800px;
-      margin: 0 auto;
       position: relative;
-      z-index: 2;
     }
-    #background {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://images.unsplash.com/photo-1519682577862-22b62b24e493?auto=format&fit=crop&w=1920&q=80') no-repeat center center;
-      background-size: cover;
-      opacity: 0;
-      transition: opacity 4s ease;
-      z-index: 1;
+
+    #texto {
+      white-space: pre-line;
+      font-size: 18px;
     }
-    .flame {
+
+    #fundo {
       position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 100px;
-      height: 100px;
-      background: radial-gradient(circle, rgba(255,140,0,0.8) 0%, rgba(0,0,0,0) 80%);
-      animation: burn 2s infinite;
-      transform: translateX(-50%);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       opacity: 0;
+      background: url('https://images.unsplash.com/photo-1528372444006-1bfc81acab02?fit=crop&w=1400&q=80') no-repeat center center;
+      background-size: cover;
+      transition: opacity 3s;
+      z-index: -1;
     }
-    @keyframes burn {
-      0% { transform: translate(-50%, 0) scale(1); opacity: 0.8; }
-      50% { transform: translate(-50%, -20px) scale(1.2); opacity: 1; }
-      100% { transform: translate(-50%, 0) scale(1); opacity: 0.8; }
+
+    .fogo {
+      animation: queimar 2s forwards;
+    }
+
+    @keyframes queimar {
+      0% { filter: brightness(1); opacity: 1; }
+      100% { filter: brightness(0.1) sepia(1) hue-rotate(-50deg); opacity: 0; }
+    }
+
+    #peca {
+      display: none;
+      margin-top: 40px;
+      font-size: 24px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div id="background"></div>
-  <div id="container"></div>
-  <div class="flame" id="flame"></div>  <script>
-    const container = document.getElementById("container");
-    const background = document.getElementById("background");
-    const flame = document.getElementById("flame");
+  <div id="fundo"></div>
+  <div id="texto"></div>
+  <div id="peca">🧩 Fragmento encontrado.</div>
 
-    const text = `Era uma vez um livro que nunca terminou de ser escrito. Cada página parecia viva, respirando memórias antigas. E à medida que o tempo passava, a tinta ganhava vontade própria. Palavras surgiam. Sozinhas. Lentamente. Até que...`;
+  <script>
+    const texto = `Era uma vez uma página que queria contar uma história.
+Mas ela sabia que não tinha muito tempo...
 
-    let index = 0;
-    function typeWriter() {
-      if (index < text.length) {
-        container.innerHTML += text.charAt(index);
-        index++;
+Seu destino era virar fragmento — mas não sem antes deixar sua marca.
 
-        if (index === Math.floor(text.length / 2)) {
-          background.style.opacity = 0.25;
+A cada letra, uma memória.
+A cada pausa, um sinal.
+
+Até que...`;
+
+    const textoDiv = document.getElementById("texto");
+    const fundo = document.getElementById("fundo");
+    const peca = document.getElementById("peca");
+
+    let i = 0;
+
+    function escrever() {
+      if (i < texto.length) {
+        textoDiv.innerHTML += texto[i];
+        i++;
+        if (i === Math.floor(texto.length / 2)) {
+          fundo.style.opacity = 0.2;
         }
-
-        if (index === Math.floor(text.length * 0.8)) {
-          background.style.opacity = 0.5;
-          flame.style.opacity = 1;
+        if (i === Math.floor(texto.length * 0.85)) {
+          fundo.style.opacity = 0.5;
         }
-
-        setTimeout(typeWriter, 80 + Math.random() * 60);
+        setTimeout(escrever, 70);
+      } else {
+        fundo.classList.add("fogo");
+        setTimeout(() => {
+          peca.style.display = 'block';
+        }, 2000);
       }
     }
 
-    typeWriter();
-  </script></body>
+    escrever();
+  </script>
+</body>
 </html>
