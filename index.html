@@ -1,31 +1,73 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Labirinto Teste</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Adicione seu arquivo CSS se necessário -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Labirinto</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: "Courier New", monospace;
+      background: black;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-image: url('https://i.imgur.com/h9GpX8v.jpeg'); /* imagem sombria opcional */
+      background-size: cover;
+      background-position: center;
+    }
+
+    .entrada {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 2em;
+      border: 2px solid white;
+      border-radius: 10px;
+      text-align: center;
+      animation: fadeIn 2s ease-in;
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background: crimson;
+      border: none;
+      color: white;
+      padding: 1em 2em;
+      font-size: 1em;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: darkred;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <h1>Bem-vindo ao Labirinto!</h1>
-        <p>Explore o labirinto clicando nos links abaixo:</p>
-    </header>
+  <div class="entrada">
+    <h1>Você está pronto para entrar no labirinto?</h1>
+    <button onclick="entrarNoLabirinto()">Entrar</button>
+  </div>
 
-    <nav>
-        <ul>
-            <li><a href="pagina-fogo-v2.html">Página Fogo V2</a></li>
-            <li><a href="pagina-fogo.html">Página Fogo</a></li>
-            <li><a href="página1.html">Página 1</a></li>
-            <li><a href="página2.html">Página 2</a></li>
-            <li><a href="página3.html">Página 3</a></li>
-        </ul>
-    </nav>
-
-    <footer>
-        <p>© 2025 Labirinto Teste. Todos os direitos reservados.</p>
-    </footer>
+  <script>
+    function entrarNoLabirinto() {
+      window.location.href = "pagina1.html";
+    }
+  </script>
 
 </body>
 </html>
