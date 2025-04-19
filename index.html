@@ -1,93 +1,67 @@
 <!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Experiência Gamificada</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #222;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .page {
-            display: none;
-            text-align: center;
-        }
-        .active {
-            display: block;
-        }
-        #enter-button {
-            font-size: 20px;
-            padding: 15px 30px;
-            background-color: #333;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-        #enter-button:hover {
-            background-color: #555;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Labirinto Hipertextual</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    .path {
+      margin: 20px 0;
+      cursor: pointer;
+      color: blue;
+      text-decoration: underline;
+    }
+    .path:hover {
+      color: darkblue;
+    }
+    #audioPlayer {
+      display: none;
+    }
+  </style>
 </head>
 <body>
+  <h1>Labirinto Hipertextual</h1>
+  <p>Escolha seu caminho no labirinto...</p>
 
-    <div id="page1" class="page active">
-        <h1>Bem-vindo ao Labirinto!</h1>
-        <p>Inicie a jornada clicando abaixo...</p>
-        <button id="enter-button">Entrar</button>
-    </div>
+  <div id="path1" class="path" onclick="navigateTo('1')">Caminho 1: O Início</div>
+  <div id="path2" class="path" onclick="navigateTo('2')">Caminho 2: O Mistério</div>
 
-    <div id="page2" class="page">
-        <h1>Segunda Página</h1>
-        <p>Você está avançando!</p>
-    </div>
+  <div id="contentArea"></div>
 
-    <div id="page3" class="page">
-        <h1>Quase lá...</h1>
-        <p>Prepare-se para a última parte!</p>
-    </div>
+  <audio id="audioPlayer" controls>
+    <source id="audioSource" type="audio/mpeg">
+    Seu navegador não suporta o elemento de áudio.
+  </audio>
 
-    <div id="page4" class="page">
-        <h1>Parabéns!</h1>
-        <p>Você completou a jornada!</p>
-    </div>
+  <script>
+    const audioFiles = {
+      '1': 'audio/caminho1.mp3',
+      '2': 'audio/caminho2.mp3',
+    };
 
-    <script>
-        // Javascript para navegação automática
+    function navigateTo(pathId) {
+      let content = '';
+      let audioFile = audioFiles[pathId];
 
-        let currentPage = 1; // Página inicial
+      if (pathId === '1') {
+        content = '<h2>Você está no Início do Labirinto!</h2><p>Escolha seu próximo passo...</p>';
+      } else if (pathId === '2') {
+        content = '<h2>O Mistério se Profunda!</h2><p>Você está em uma encruzilhada...</p>';
+      }
 
-        // Função para mudar para a próxima página
-        function goToNextPage() {
-            const current = document.getElementById('page' + currentPage);
-            current.classList.remove('active'); // Esconde a página atual
-            currentPage++; // Avança para a próxima página
-            const next = document.getElementById('page' + currentPage);
-            next.classList.add('active'); // Exibe a próxima página
+      document.getElementById('contentArea').innerHTML = content;
 
-            // Quando a última página for alcançada, o processo termina
-            if (currentPage === 4) {
-                return; // Já está na última página, então para a navegação
-            }
+      const audioPlayer = document.getElementById('audioPlayer');
+      const audioSource = document.getElementById('audioSource');
+      audioSource.src = audioFile;
 
-            // Avança para a próxima página após 5 segundos
-            setTimeout(goToNextPage, 5000);
-        }
-
-        // Iniciar navegação automática ao clicar no botão "Entrar"
-        document.getElementById('enter-button').addEventListener('click', function() {
-            goToNextPage(); // Inicia a navegação
-        });
-    </script>
-
+      audioPlayer.load();
+      audioPlayer.style.display = 'block';  // Exibe o player de áudio
+      audioPlayer.play();
+    }
+  </script>
 </body>
 </html>
