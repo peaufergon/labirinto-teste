@@ -1,161 +1,127 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Página em Fogo</title>
+  <meta charset="UTF-8">
+  <title>Página em Chamas</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: #111;
+      background-color: black;
+      overflow: hidden;
       color: white;
       font-family: 'Courier New', monospace;
-      overflow: hidden;
       position: relative;
     }
 
-    #typewriter {
-      font-size: 2rem;
-      max-width: 80%;
-      margin: 100px auto;
+    #container {
+      position: relative;
+      z-index: 2;
+      padding: 5vh 10vw;
+      font-size: 1.5rem;
+      line-height: 1.6;
+    }
+
+    #typed-text {
       white-space: pre-wrap;
-      z-index: 10;
-      position: relative;
-      text-shadow: 0 0 5px #fff;
     }
 
-    #bgImage {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background-size: cover;
-      background-position: center;
+    #background-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       opacity: 0;
-      transition: opacity 4s ease;
-      z-index: 1;
+      z-index: 0;
+      transition: opacity 3s ease-in;
     }
 
-    canvas {
+    #fire-video {
       position: fixed;
-      top: 0; left: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
       pointer-events: none;
-      z-index: 5;
+      z-index: 3;
+      transition: opacity 5s ease-in;
     }
 
-    #overlay {
+    #overlay-dark {
       position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: radial-gradient(circle at center, transparent 0%, black 100%);
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(rgba(0,0,0,0), rgba(0,0,0,1));
       opacity: 0;
-      transition: opacity 6s ease-in-out;
-      z-index: 20;
+      z-index: 4;
+      transition: opacity 5s ease-in;
     }
   </style>
 </head>
 <body>
-  <div id="bgImage"></div>
-  <div id="typewriter"></div>
-  <canvas id="fireCanvas"></canvas>
-  <div id="overlay"></div>
+  <video id="fire-video" src="https://cdn.pixabay.com/video/2020/04/30/37167-418512528_large.mp4" autoplay muted loop></video>
+  <img id="background-image" src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?auto=format&fit=crop&w=1950&q=80" alt="Imagem de fundo">
+  <div id="overlay-dark"></div>
+
+  <div id="container">
+    <div id="typed-text"></div>
+  </div>
 
   <script>
-    const text = "Há coisas que só fazem sentido quando queimam.\nOutras... você só entende depois do fim.";
-    const typewriter = document.getElementById("typewriter");
-    const bgImage = document.getElementById("bgImage");
-    const overlay = document.getElementById("overlay");
+    const texto = `A cidade nunca dorme. As luzes... sempre acesas.\nMas algo mudou hoje.\n\n`;
 
-    let idx = 0;
+    const textoFinal = `Uma presença paira no ar.\nComo se alguém... ou algo... estivesse nos observando.`;
 
-    function typeText() {
-      if (idx < text.length) {
-        typewriter.textContent += text[idx++];
-        setTimeout(typeText, 60);
-        if (idx === Math.floor(text.length / 2)) {
-          showBackground();
-        }
-      } else {
-        startFire();
-        setTimeout(() => {
-          overlay.style.opacity = 1;
-        }, 10000);
+    const typedText = document.getElementById("typed-text");
+    const bgImage = document.getElementById("background-image");
+    const fireVideo = document.getElementById("fire-video");
+    const overlayDark = document.getElementById("overlay-dark");
+
+    let index = 0;
+    let fase = 1;
+
+    function digitarTexto(textoCompleto, callback) {
+      if (index < textoCompleto.length) {
+        typedText.innerText += textoCompleto.charAt(index);
+        index++;
+        setTimeout(() => digitarTexto(textoCompleto, callback), 60);
+      } else if (callback) {
+        callback();
       }
     }
 
-    function showBackground() {
-      const images = [
-        'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
-        'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
-        'https://images.unsplash.com/photo-1482192596544-9eb780fc7f66'
-      ];
-      const randomImage = images[Math.floor(Math.random() * images.length)];
-      bgImage.style.backgroundImage = `url(${randomImage})`;
-      bgImage.style.opacity = 0.4;
+    function iniciarAnimacao() {
+      setTimeout(() => {
+        bgImage.style.opacity = 0.4;
+      }, 500);
+
+      setTimeout(() => {
+        typedText.innerText += "\n\n";
+        index = 0;
+        digitarTexto(textoFinal, iniciarFogo);
+      }, 3000);
     }
 
-    function startFire() {
-      const canvas = document.getElementById('fireCanvas');
-      const ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    function iniciarFogo() {
+      fireVideo.style.opacity = 1;
 
-      const particles = [];
+      setTimeout(() => {
+        typedText.style.transition = "opacity 4s ease-out";
+        typedText.style.opacity = 0;
+      }, 4000);
 
-      class FireParticle {
-        constructor(x, y) {
-          this.x = x;
-          this.y = y;
-          this.size = Math.random() * 5 + 2;
-          this.speedY = Math.random() * -2 - 1;
-          this.speedX = Math.random() * 1 - 0.5;
-          this.alpha = 1;
-          this.color = `rgb(${Math.random()*255}, ${Math.random()*80}, 0)`;
-        }
-
-        update() {
-          this.y += this.speedY;
-          this.x += this.speedX;
-          this.alpha -= 0.01;
-        }
-
-        draw() {
-          ctx.globalAlpha = this.alpha;
-          ctx.beginPath();
-          ctx.fillStyle = this.color;
-          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.globalAlpha = 1;
-        }
-      }
-
-      function animateFire() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        if (Math.random() < 0.3) {
-          for (let i = 0; i < 10; i++) {
-            const x = Math.random() * canvas.width;
-            const y = canvas.height - 10;
-            particles.push(new FireParticle(x, y));
-          }
-        }
-
-        for (let i = 0; i < particles.length; i++) {
-          particles[i].update();
-          particles[i].draw();
-          if (particles[i].alpha <= 0) {
-            particles.splice(i, 1);
-            i--;
-          }
-        }
-
-        requestAnimationFrame(animateFire);
-      }
-
-      animateFire();
+      setTimeout(() => {
+        overlayDark.style.opacity = 1;
+      }, 8000);
     }
 
-    typeText();
+    digitarTexto(texto, iniciarAnimacao);
   </script>
 </body>
 </html>
