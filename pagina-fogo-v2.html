@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>Incêndio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Página em Fogo Cinematográfico</title>
   <style>
     html, body {
       margin: 0;
@@ -12,112 +13,116 @@
     }
 
     canvas {
-      position: absolute;
+      display: block;
+      position: fixed;
       top: 0;
       left: 0;
+      z-index: 1;
     }
 
-    .mensagem {
+    #text {
       position: absolute;
-      z-index: 2;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: 20%;
+      left: 10%;
+      right: 10%;
       color: white;
-      font-size: 2.5em;
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      animation: fadeOut 10s forwards;
-    }
-
-    @keyframes fadeOut {
-      0% { opacity: 1; }
-      100% { opacity: 0; display: none; }
+      font-family: 'Courier New', monospace;
+      font-size: 24px;
+      line-height: 1.6;
+      z-index: 2;
+      white-space: pre-wrap;
+      text-shadow: 0 0 10px red;
     }
   </style>
 </head>
 <body>
-  <canvas id="fireCanvas"></canvas>
-  <div class="mensagem">A página está sendo consumida pelo fogo...</div>
 
-  <script>
-    const canvas = document.getElementById("fireCanvas");
-    const ctx = canvas.getContext("2d");
+<div id="text">“E então, quando tudo parecia calmo... a página começou a arder.”\n\nNada era por acaso.\nAs palavras carregavam sinais.\nAs cinzas sabiam mais do que os olhos.</div>
+<canvas id="fire"></canvas>
 
-    let width, height;
-    let firePixels = [];
-    const fireWidth = 100;
-    const fireHeight = 100;
-    const palette = ["#070707", "#1f0707", "#2f0f07", "#470f07", "#571707", "#671f07", "#771f07", "#8f2707", "#9f2f07", "#af3f07", "#bf4707", "#c74707", "#DF4F07", "#DF5707", "#DF5707", "#D75F07", "#D7670F", "#CF6F0F", "#CF770F", "#CF7F0F", "#CF8717", "#C78717", "#C78F17", "#C7971F", "#BF9F1F", "#BF9F1F", "#BFA727", "#BFA727", "#BFAF2F", "#B7AF2F", "#B7B72F", "#B7B737"];
+<script>
+  const canvas = document.getElementById('fire');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
 
-    function resizeCanvas() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
+  let firePixelsArray = [];
+  const fireWidth = Math.floor(canvas.width / 4);
+  const fireHeight = Math.floor(canvas.height / 4);
+
+  const fireColorsPalette = [
+    {"r":7,"g":7,"b":7}, {"r":31,"g":7,"b":7}, {"r":47,"g":15,"b":7},
+    {"r":71,"g":15,"b":7}, {"r":87,"g":23,"b":7}, {"r":103,"g":31,"b":7},
+    {"r":119,"g":31,"b":7}, {"r":143,"g":39,"b":7}, {"r":159,"g":47,"b":7},
+    {"r":175,"g":63,"b":7}, {"r":191,"g":71,"b":7}, {"r":199,"g":71,"b":7},
+    {"r":223,"g":79,"b":7}, {"r":223,"g":87,"b":7}, {"r":223,"g":87,"b":7},
+    {"r":215,"g":95,"b":7}, {"r":215,"g":95,"b":7}, {"r":215,"g":103,"b":15},
+    {"r":207,"g":111,"b":15}, {"r":207,"g":119,"b":15}, {"r":207,"g":127,"b":15},
+    {"r":207,"g":135,"b":23}, {"r":199,"g":135,"b":23}, {"r":199,"g":143,"b":23},
+    {"r":199,"g":151,"b":31}, {"r":191,"g":159,"b":31}, {"r":191,"g":159,"b":31},
+    {"r":191,"g":167,"b":39}, {"r":191,"g":167,"b":39}, {"r":191,"g":175,"b":47},
+    {"r":183,"g":175,"b":47}, {"r":183,"g":183,"b":47}, {"r":183,"g":183,"b":55},
+    {"r":207,"g":207,"b":111}, {"r":223,"g":223,"b":159}, {"r":239,"g":239,"b":199},
+    {"r":255,"g":255,"b":255}
+  ];
+
+  function start() {
+    for (let i = 0; i < fireWidth * fireHeight; i++) {
+      firePixelsArray[i] = 0;
     }
 
-    function initializeFire() {
-      const totalPixels = fireWidth * fireHeight;
-      firePixels = new Array(totalPixels).fill(0);
+    for (let column = 0; column < fireWidth; column++) {
+      const overflowPixelIndex = fireWidth * fireHeight;
+      const pixelIndex = (overflowPixelIndex - fireWidth) + column;
 
-      for (let x = 0; x < fireWidth; x++) {
-        const overflowPixelIndex = fireWidth * fireHeight;
-        const pixelIndex = (fireWidth * (fireHeight - 1)) + x;
-        firePixels[pixelIndex] = palette.length - 1;
+      firePixelsArray[pixelIndex] = 36;
+    }
+
+    setInterval(calculateFirePropagation, 50);
+  }
+
+  function calculateFirePropagation() {
+    for (let column = 0; column < fireWidth; column++) {
+      for (let row = 0; row < fireHeight; row++) {
+        const pixelIndex = column + (fireWidth * row);
+        updateFireIntensityPerPixel(pixelIndex);
       }
     }
 
-    function calculateFirePropagation() {
-      for (let x = 0; x < fireWidth; x++) {
-        for (let y = 1; y < fireHeight; y++) {
-          const pixelIndex = x + (fireWidth * y);
-          updateFireIntensityPerPixel(pixelIndex);
-        }
-      }
+    renderFire();
+  }
+
+  function updateFireIntensityPerPixel(currentPixelIndex) {
+    const belowPixelIndex = currentPixelIndex + fireWidth;
+
+    if (belowPixelIndex >= fireWidth * fireHeight) return;
+
+    const decay = Math.floor(Math.random() * 3);
+    const belowPixelFireIntensity = firePixelsArray[belowPixelIndex];
+    const newFireIntensity =
+      belowPixelFireIntensity - decay >= 0 ? belowPixelFireIntensity - decay : 0;
+
+    firePixelsArray[currentPixelIndex - decay] = newFireIntensity;
+  }
+
+  function renderFire() {
+    const image = ctx.createImageData(fireWidth, fireHeight);
+    for (let i = 0; i < firePixelsArray.length; i++) {
+      const intensity = firePixelsArray[i];
+      const color = fireColorsPalette[intensity];
+      const pixelIndex = i * 4;
+
+      image.data[pixelIndex] = color.r;
+      image.data[pixelIndex + 1] = color.g;
+      image.data[pixelIndex + 2] = color.b;
+      image.data[pixelIndex + 3] = 255;
     }
 
-    function updateFireIntensityPerPixel(currentPixelIndex) {
-      const belowPixelIndex = currentPixelIndex + fireWidth;
+    ctx.putImageData(image, 0, 0, 0, 0, canvas.width, canvas.height);
+  }
 
-      if (belowPixelIndex >= fireWidth * fireHeight) {
-        return;
-      }
+  start();
+</script>
 
-      const decay = Math.floor(Math.random() * 3);
-      const belowIntensity = firePixels[belowPixelIndex];
-      const newIntensity = belowIntensity - decay >= 0 ? belowIntensity - decay : 0;
-
-      firePixels[currentPixelIndex - decay >= 0 ? currentPixelIndex - decay : 0] = newIntensity;
-    }
-
-    function renderFire() {
-      const pixelWidth = width / fireWidth;
-      const pixelHeight = height / fireHeight;
-
-      for (let y = 0; y < fireHeight; y++) {
-        for (let x = 0; x < fireWidth; x++) {
-          const pixelIndex = x + (fireWidth * y);
-          const fireIntensity = firePixels[pixelIndex];
-          const color = palette[fireIntensity];
-
-          ctx.fillStyle = color;
-          ctx.fillRect(x * pixelWidth, y * pixelHeight, pixelWidth, pixelHeight);
-        }
-      }
-    }
-
-    function loop() {
-      calculateFirePropagation();
-      renderFire();
-      requestAnimationFrame(loop);
-    }
-
-    window.addEventListener("resize", resizeCanvas);
-
-    resizeCanvas();
-    initializeFire();
-    loop();
-  </script>
 </body>
 </html>
