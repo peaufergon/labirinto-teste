@@ -1,86 +1,135 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Página Fogo Cinemático</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      font-family: Arial, sans-serif;
-      background-color: black;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Queimando</title>
+    <style>
+        /* styles.css (Dentro do arquivo HTML) */
 
-    /* Fundo do fogo */
-    .fogo {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: url('https://www.example.com/fire-animation.gif') no-repeat center center;
-      background-size: cover;
-      z-index: 1;
-      opacity: 0;
-    }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #222;
+            font-family: 'Arial', sans-serif;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
 
-    /* Animação do fogo */
-    @keyframes queimar {
-      0% { opacity: 0; }
-      20% { opacity: 1; }
-      60% { opacity: 1; }
-      100% { opacity: 0; }
-    }
+        #content {
+            z-index: 2;
+            text-align: center;
+            font-size: 24px;
+        }
 
-    /* Aplica a animação */
-    .fogo.ativo {
-      animation: queimar 5s linear forwards;
-    }
+        h1, p {
+            margin: 10px;
+            position: relative;
+            animation: dissolve 10s forwards, burnText 5s forwards;
+        }
 
-    /* Conteúdo da página */
-    .conteudo {
-      z-index: 2;
-      position: relative;
-      color: white;
-      padding: 50px;
-      opacity: 1;
-      transition: opacity 1s ease-in-out;
-    }
+        /* Efeito de dissolução das palavras */
+        @keyframes dissolve {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(1.1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.2);
+            }
+        }
 
-    /* Efeito de desaparecimento do conteúdo */
-    .conteudo.desaparecer {
-      opacity: 0;
-    }
-  </style>
+        /* Efeito de queimado para o texto */
+        @keyframes burnText {
+            0% {
+                color: white;
+                text-shadow: 0 0 5px #f00, 0 0 10px #f00;
+            }
+            100% {
+                color: transparent;
+                text-shadow: none;
+            }
+        }
+
+        /* Efeito de fundo com fogo */
+        #fire-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255, 0, 0, 0.8) 0%, rgba(255, 165, 0, 0.7) 100%);
+            z-index: 1;
+            opacity: 0;
+            animation: fireEffect 5s forwards;
+        }
+
+        /* Animação do fogo surgindo e crescendo */
+        @keyframes fireEffect {
+            0% {
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.6;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        /* Adicionando chamas ao fundo */
+        @keyframes flicker {
+            0% { opacity: 0.8; }
+            30% { opacity: 1; }
+            50% { opacity: 0.7; }
+            70% { opacity: 0.9; }
+            100% { opacity: 0.8; }
+        }
+
+        /* Chamas ao fundo com variação de intensidade */
+        #fire-effect::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('fire-animation.gif'); /* Substitua por um GIF de fogo realista */
+            background-size: cover;
+            animation: flicker 0.2s infinite;
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Efeito de Fogo -->
-  <div class="fogo"></div>
+    <div id="content">
+        <h1>Texto em Chamas</h1>
+        <p>Este texto será consumido pelas chamas de uma forma cinematográfica.</p>
+    </div>
 
-  <!-- Conteúdo da página -->
-  <div class="conteudo">
-    <h1>Texto Inicial da Página</h1>
-    <p>A página vai queimar cinematograficamente após o texto ser exibido.</p>
-  </div>
+    <div id="fire-effect"></div>
 
-  <script>
-    // Espera um tempo para exibir o fogo após o carregamento do conteúdo
-    setTimeout(() => {
-      const fogo = document.querySelector('.fogo');
-      const conteudo = document.querySelector('.conteudo');
+    <script>
+        // script.js (Dentro do arquivo HTML)
 
-      // Ativa o fogo
-      fogo.classList.add('ativo');
-
-      // Faz o conteúdo desaparecer gradualmente
-      setTimeout(() => {
-        conteudo.classList.add('desaparecer');
-      }, 2000);  // O conteúdo começa a desaparecer após 2 segundos
-    }, 2000);  // Fogo começa após 2 segundos da página carregar
-  </script>
+        document.addEventListener("DOMContentLoaded", function() {
+            setTimeout(function() {
+                document.getElementById("fire-effect").style.opacity = 1; // O fogo começa após 5 segundos
+            }, 5000); // 5 segundos de atraso
+        });
+    </script>
 
 </body>
 </html>
