@@ -1,19 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>RA Teste</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste AR - Câmera</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.3.2/aframe/build/aframe-ar.min.js"></script>
     <style>
-      body { margin: 0; overflow: hidden; }
+      body { margin: 0; overflow: hidden; font-family: sans-serif; }
+      a-scene { height: 100vh; }
     </style>
   </head>
   <body>
     <a-scene embedded arjs>
+      <!-- Usando o Hiro marker -->
       <a-marker preset="hiro">
-        <a-text value="Teste RA" color="red" align="center" position="0 0.2 0" rotation="0 0 0" width="2"></a-text>
-        <a-image src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Iconic_image_placeholder.png/240px-Iconic_image_placeholder.png"
-                 position="0 -0.2 0" rotation="0 0 0" width="1" height="1"></a-image>
+        <a-entity position="0 0.5 0" rotation="-90 0 0">
+          <a-text value="Teste RA" color="red" align="center" width="3"></a-text>
+        </a-entity>
       </a-marker>
       <a-entity camera></a-entity>
     </a-scene>
