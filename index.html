@@ -3,26 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Labirinto Gamificado</title>
+    <title>Experiência Gamificada</title>
     <style>
-        /* Coloque seu CSS aqui ou mantenha o que você já tem */
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
             background-color: #222;
             color: white;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
-
         .page {
             display: none;
-            padding: 20px;
+            text-align: center;
         }
-
         .active {
             display: block;
         }
-
-        /* Estilos para o botão */
         #enter-button {
             font-size: 20px;
             padding: 15px 30px;
@@ -32,7 +33,6 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-
         #enter-button:hover {
             background-color: #555;
         }
@@ -40,53 +40,52 @@
 </head>
 <body>
 
-    <!-- Página 1 - Entrada -->
     <div id="page1" class="page active">
         <h1>Bem-vindo ao Labirinto!</h1>
         <p>Inicie a jornada clicando abaixo...</p>
         <button id="enter-button">Entrar</button>
     </div>
 
-    <!-- Página 2 - Segundo estágio -->
     <div id="page2" class="page">
         <h1>Segunda Página</h1>
         <p>Você está avançando!</p>
     </div>
 
-    <!-- Página 3 - Quase lá -->
     <div id="page3" class="page">
         <h1>Quase lá...</h1>
         <p>Prepare-se para a última parte!</p>
     </div>
 
-    <!-- Página 4 - Conclusão -->
     <div id="page4" class="page">
         <h1>Parabéns!</h1>
         <p>Você completou a jornada!</p>
     </div>
 
     <script>
-        // Função para navegação automática
-        let currentPage = 1;
+        // Javascript para navegação automática
 
+        let currentPage = 1; // Página inicial
+
+        // Função para mudar para a próxima página
         function goToNextPage() {
             const current = document.getElementById('page' + currentPage);
-            current.classList.remove('active');
-            currentPage++;
+            current.classList.remove('active'); // Esconde a página atual
+            currentPage++; // Avança para a próxima página
             const next = document.getElementById('page' + currentPage);
-            next.classList.add('active');
+            next.classList.add('active'); // Exibe a próxima página
 
-            // Se chegar na última página, para
+            // Quando a última página for alcançada, o processo termina
             if (currentPage === 4) {
-                return;
+                return; // Já está na última página, então para a navegação
             }
 
-            setTimeout(goToNextPage, 5000); // Avança para a próxima após 5 segundos
+            // Avança para a próxima página após 5 segundos
+            setTimeout(goToNextPage, 5000);
         }
 
-        // Iniciar a navegação automática ao clicar no botão
+        // Iniciar navegação automática ao clicar no botão "Entrar"
         document.getElementById('enter-button').addEventListener('click', function() {
-            goToNextPage();
+            goToNextPage(); // Inicia a navegação
         });
     </script>
 
