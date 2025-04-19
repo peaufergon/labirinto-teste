@@ -1,128 +1,161 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Página em Fogo Cinematográfico</title>
+  <title>Página em Fogo</title>
   <style>
-    html, body {
+    body {
       margin: 0;
       padding: 0;
-      background: black;
+      background: #111;
+      color: white;
+      font-family: 'Courier New', monospace;
       overflow: hidden;
+      position: relative;
     }
 
-    canvas {
-      display: block;
+    #typewriter {
+      font-size: 2rem;
+      max-width: 80%;
+      margin: 100px auto;
+      white-space: pre-wrap;
+      z-index: 10;
+      position: relative;
+      text-shadow: 0 0 5px #fff;
+    }
+
+    #bgImage {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 4s ease;
       z-index: 1;
     }
 
-    #text {
-      position: absolute;
-      top: 20%;
-      left: 10%;
-      right: 10%;
-      color: white;
-      font-family: 'Courier New', monospace;
-      font-size: 24px;
-      line-height: 1.6;
-      z-index: 2;
-      white-space: pre-wrap;
-      text-shadow: 0 0 10px red;
+    canvas {
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: radial-gradient(circle at center, transparent 0%, black 100%);
+      opacity: 0;
+      transition: opacity 6s ease-in-out;
+      z-index: 20;
     }
   </style>
 </head>
 <body>
+  <div id="bgImage"></div>
+  <div id="typewriter"></div>
+  <canvas id="fireCanvas"></canvas>
+  <div id="overlay"></div>
 
-<div id="text">“E então, quando tudo parecia calmo... a página começou a arder.”\n\nNada era por acaso.\nAs palavras carregavam sinais.\nAs cinzas sabiam mais do que os olhos.</div>
-<canvas id="fire"></canvas>
+  <script>
+    const text = "Há coisas que só fazem sentido quando queimam.\nOutras... você só entende depois do fim.";
+    const typewriter = document.getElementById("typewriter");
+    const bgImage = document.getElementById("bgImage");
+    const overlay = document.getElementById("overlay");
 
-<script>
-  const canvas = document.getElementById('fire');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+    let idx = 0;
 
-  let firePixelsArray = [];
-  const fireWidth = Math.floor(canvas.width / 4);
-  const fireHeight = Math.floor(canvas.height / 4);
-
-  const fireColorsPalette = [
-    {"r":7,"g":7,"b":7}, {"r":31,"g":7,"b":7}, {"r":47,"g":15,"b":7},
-    {"r":71,"g":15,"b":7}, {"r":87,"g":23,"b":7}, {"r":103,"g":31,"b":7},
-    {"r":119,"g":31,"b":7}, {"r":143,"g":39,"b":7}, {"r":159,"g":47,"b":7},
-    {"r":175,"g":63,"b":7}, {"r":191,"g":71,"b":7}, {"r":199,"g":71,"b":7},
-    {"r":223,"g":79,"b":7}, {"r":223,"g":87,"b":7}, {"r":223,"g":87,"b":7},
-    {"r":215,"g":95,"b":7}, {"r":215,"g":95,"b":7}, {"r":215,"g":103,"b":15},
-    {"r":207,"g":111,"b":15}, {"r":207,"g":119,"b":15}, {"r":207,"g":127,"b":15},
-    {"r":207,"g":135,"b":23}, {"r":199,"g":135,"b":23}, {"r":199,"g":143,"b":23},
-    {"r":199,"g":151,"b":31}, {"r":191,"g":159,"b":31}, {"r":191,"g":159,"b":31},
-    {"r":191,"g":167,"b":39}, {"r":191,"g":167,"b":39}, {"r":191,"g":175,"b":47},
-    {"r":183,"g":175,"b":47}, {"r":183,"g":183,"b":47}, {"r":183,"g":183,"b":55},
-    {"r":207,"g":207,"b":111}, {"r":223,"g":223,"b":159}, {"r":239,"g":239,"b":199},
-    {"r":255,"g":255,"b":255}
-  ];
-
-  function start() {
-    for (let i = 0; i < fireWidth * fireHeight; i++) {
-      firePixelsArray[i] = 0;
-    }
-
-    for (let column = 0; column < fireWidth; column++) {
-      const overflowPixelIndex = fireWidth * fireHeight;
-      const pixelIndex = (overflowPixelIndex - fireWidth) + column;
-
-      firePixelsArray[pixelIndex] = 36;
-    }
-
-    setInterval(calculateFirePropagation, 50);
-  }
-
-  function calculateFirePropagation() {
-    for (let column = 0; column < fireWidth; column++) {
-      for (let row = 0; row < fireHeight; row++) {
-        const pixelIndex = column + (fireWidth * row);
-        updateFireIntensityPerPixel(pixelIndex);
+    function typeText() {
+      if (idx < text.length) {
+        typewriter.textContent += text[idx++];
+        setTimeout(typeText, 60);
+        if (idx === Math.floor(text.length / 2)) {
+          showBackground();
+        }
+      } else {
+        startFire();
+        setTimeout(() => {
+          overlay.style.opacity = 1;
+        }, 10000);
       }
     }
 
-    renderFire();
-  }
-
-  function updateFireIntensityPerPixel(currentPixelIndex) {
-    const belowPixelIndex = currentPixelIndex + fireWidth;
-
-    if (belowPixelIndex >= fireWidth * fireHeight) return;
-
-    const decay = Math.floor(Math.random() * 3);
-    const belowPixelFireIntensity = firePixelsArray[belowPixelIndex];
-    const newFireIntensity =
-      belowPixelFireIntensity - decay >= 0 ? belowPixelFireIntensity - decay : 0;
-
-    firePixelsArray[currentPixelIndex - decay] = newFireIntensity;
-  }
-
-  function renderFire() {
-    const image = ctx.createImageData(fireWidth, fireHeight);
-    for (let i = 0; i < firePixelsArray.length; i++) {
-      const intensity = firePixelsArray[i];
-      const color = fireColorsPalette[intensity];
-      const pixelIndex = i * 4;
-
-      image.data[pixelIndex] = color.r;
-      image.data[pixelIndex + 1] = color.g;
-      image.data[pixelIndex + 2] = color.b;
-      image.data[pixelIndex + 3] = 255;
+    function showBackground() {
+      const images = [
+        'https://images.unsplash.com/photo-1507525428034-b723cf961d3e',
+        'https://images.unsplash.com/photo-1506744038136-46273834b3fb',
+        'https://images.unsplash.com/photo-1482192596544-9eb780fc7f66'
+      ];
+      const randomImage = images[Math.floor(Math.random() * images.length)];
+      bgImage.style.backgroundImage = `url(${randomImage})`;
+      bgImage.style.opacity = 0.4;
     }
 
-    ctx.putImageData(image, 0, 0, 0, 0, canvas.width, canvas.height);
-  }
+    function startFire() {
+      const canvas = document.getElementById('fireCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
 
-  start();
-</script>
+      const particles = [];
 
+      class FireParticle {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.size = Math.random() * 5 + 2;
+          this.speedY = Math.random() * -2 - 1;
+          this.speedX = Math.random() * 1 - 0.5;
+          this.alpha = 1;
+          this.color = `rgb(${Math.random()*255}, ${Math.random()*80}, 0)`;
+        }
+
+        update() {
+          this.y += this.speedY;
+          this.x += this.speedX;
+          this.alpha -= 0.01;
+        }
+
+        draw() {
+          ctx.globalAlpha = this.alpha;
+          ctx.beginPath();
+          ctx.fillStyle = this.color;
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.globalAlpha = 1;
+        }
+      }
+
+      function animateFire() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        if (Math.random() < 0.3) {
+          for (let i = 0; i < 10; i++) {
+            const x = Math.random() * canvas.width;
+            const y = canvas.height - 10;
+            particles.push(new FireParticle(x, y));
+          }
+        }
+
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+          if (particles[i].alpha <= 0) {
+            particles.splice(i, 1);
+            i--;
+          }
+        }
+
+        requestAnimationFrame(animateFire);
+      }
+
+      animateFire();
+    }
+
+    typeText();
+  </script>
 </body>
 </html>
